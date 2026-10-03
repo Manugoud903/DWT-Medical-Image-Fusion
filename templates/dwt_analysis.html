@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DWT Analysis</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .header {
+            background: #111827;
+            color: white;
+            padding: 25px 35px;
+        }
+
+        .header h1 {
+            margin: 0 0 8px;
+        }
+
+        .header p {
+            margin: 0;
+            color: #d1d5db;
+        }
+
+        .container {
+            padding: 30px;
+        }
+
+        .section {
+            background: white;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .section h2 {
+            margin-top: 0;
+        }
+
+        .wavelet-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .wavelet-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #fafafa;
+        }
+
+        .wavelet-card h3 {
+            padding: 15px;
+            margin: 0;
+            background: #eef2f7;
+        }
+
+        .image-box {
+            height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            background: #111827;
+        }
+
+        .image-box img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .description {
+            padding: 15px;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        .back-button {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            padding: 12px 22px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .back-button:hover {
+            background: #1d4ed8;
+        }
+
+        @media (max-width: 900px) {
+            .wavelet-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .wavelet-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>DWT Analysis</h1>
+        <p>Multi-scale decomposition of medical images using Discrete Wavelet Transform</p>
+    </div>
+
+    <div class="container">
+
+        <a href="/" class="back-button">
+            ← Back to Dashboard
+        </a>
+
+        <div class="section">
+
+            <h2>Discrete Wavelet Transform</h2>
+
+            <p>
+                DWT decomposes an image into different frequency components.
+                The four major sub-bands are LL, LH, HL and HH.
+            </p>
+
+            <div class="wavelet-grid">
+
+                <div class="wavelet-card">
+                    <h3>LL - Approximation</h3>
+
+                    <div class="image-box">
+                        <span>LL Component</span>
+                    </div>
+
+                    <div class="description">
+                        Contains the main low-frequency and structural information.
+                    </div>
+                </div>
+
+
+                <div class="wavelet-card">
+                    <h3>LH - Horizontal Details</h3>
+
+                    <div class="image-box">
+                        <span>LH Component</span>
+                    </div>
+
+                    <div class="description">
+                        Represents horizontal detail information in the image.
+                    </div>
+                </div>
+
+
+                <div class="wavelet-card">
+                    <h3>HL - Vertical Details</h3>
+
+                    <div class="image-box">
+                        <span>HL Component</span>
+                    </div>
+
+                    <div class="description">
+                        Represents vertical detail information in the image.
+                    </div>
+                </div>
+
+
+                <div class="wavelet-card">
+                    <h3>HH - Diagonal Details</h3>
+
+                    <div class="image-box">
+                        <span>HH Component</span>
+                    </div>
+
+                    <div class="description">
+                        Represents diagonal and high-frequency details.
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="section">
+
+            <h2>Fusion Process</h2>
+
+            <p>
+                CT and MRI images are decomposed into multi-scale frequency
+                components. The corresponding coefficients are then combined
+                and reconstructed using the inverse DWT to produce the fused image.
+            </p>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

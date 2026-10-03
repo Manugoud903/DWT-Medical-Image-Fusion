@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWT Medical Image Fusion</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: #111827;
+            color: white;
+            padding: 25px 18px;
+        }
+
+        .logo {
+            font-size: 21px;
+            font-weight: bold;
+            margin-bottom: 35px;
+            text-align: center;
+        }
+
+        .nav-item {
+            padding: 13px 15px;
+            margin: 7px 0;
+            border-radius: 8px;
+            color: #d1d5db;
+            cursor: pointer;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        .main {
+            margin-left: 250px;
+            padding: 30px;
+        }
+
+        .header {
+            background: white;
+            padding: 28px;
+            border-radius: 14px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .header h1 {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .card-title {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .card-value {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .section {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .section h2 {
+            margin-bottom: 8px;
+        }
+
+        .section-description {
+            color: #6b7280;
+            margin-bottom: 20px;
+        }
+
+        .upload-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .upload-box {
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .upload-box h3 {
+            margin-bottom: 12px;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+        }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .preview-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 15px;
+            background: #fafafa;
+        }
+
+        .preview-card h3 {
+            margin-bottom: 12px;
+        }
+
+        .preview-card img {
+            width: 100%;
+            height: 230px;
+            object-fit: contain;
+            background: #111827;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .placeholder {
+            height: 230px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eef2f7;
+            border-radius: 8px;
+            color: #9ca3af;
+        }
+
+        .button-area {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .status {
+            margin-top: 15px;
+            text-align: center;
+            color: #2563eb;
+            font-weight: bold;
+        }
+
+        .method-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .method {
+            padding: 18px;
+            background: #f8fafc;
+            border-radius: 10px;
+        }
+
+        .method h3 {
+            margin-bottom: 8px;
+        }
+
+        .method p {
+            color: #6b7280;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        .footer {
+            text-align: center;
+            color: #6b7280;
+            padding: 20px;
+        }
+
+        @media (max-width: 1000px) {
+
+            .cards,
+            .method-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .preview-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .upload-grid,
+            .cards,
+            .method-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body><!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">
+            DWT Fusion Dashboard
+        </div>
+
+        <div class="nav-item active">
+            Dashboard
+        </div>
+
+        <div class="nav-item">
+            Image Fusion
+        </div>
+
+        <div class="nav-item">
+            DWT Analysis
+        </div>
+
+        <div class="nav-item">
+            Quality Metrics
+        </div>
+
+        <div class="nav-item">
+            Results
+        </div>
+
+        <div class="nav-item">
+            About Project
+        </div>
+
+    </div><!-- Main Content -->
+    <div class="main"><!-- Header -->
+        <div class="header">
+
+            <h1>
+                DWT Based Medical Image Fusion
+            </h1>
+
+            <p>
+                An intelligent medical image fusion system designed to combine
+                complementary information from CT and MRI images using
+                Discrete Wavelet Transform (DWT) based multi-scale image fusion.
+                The system produces a single enhanced fused image containing
+                useful structural and anatomical information.
+            </p>
+
+        </div>
+
+
+        <!-- Information Cards -->
+        <div class="cards">
+
+            <div class="card">
+                <div class="card-title">
+                    Input Modality
+                </div>
+
+                <div class="card-value">
+                    CT + MRI
+                </div>
+            </div>
+
+
+            <div class="card">
+                <div class="card-title">
+                    Fusion Method
+                </div>
+
+                <div class="card-value">
+                    DWT
+                </div>
+            </div>
+
+
+            <div class="card">
+                <div class="card-title">
+                    Processing
+                </div>
+
+                <div class="card-value">
+                    Multiscale
+                </div>
+            </div>
+
+
+            <div class="card">
+                <div class="card-title">
+                    System Status
+                </div>
+
+                <div class="card-value">
+                    Ready
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- Fusion Work -->
+        <div class="section">
+
+            <h2>
+                Image Fusion
+            </h2>
+
+            <p class="section-description">
+                Upload CT and MRI medical images to perform DWT-based image fusion.
+            </p>
+
+
+            <form id="fusionForm" action="/fuse" method="POST" enctype="multipart/form-data">
+
+
+                <div class="upload-grid">
+
+                    <!-- CT -->
+                    <div class="upload-box">
+
+                        <h3>
+                            CT Image
+                        </h3>
+
+                        <input type="file" id="ctInput" name="ct" accept="image/*" required>
+
+                    </div>
+
+
+                    <!-- MRI -->
+                    <div class="upload-box">
+
+                        <h3>
+                            MRI Image
+                        </h3>
+
+                        <input type="file" id="mriInput" name="mri" accept="image/*" required>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Preview -->
+                <div class="preview-grid">
+
+                    <div class="preview-card">
+
+                        <h3>
+                            CT Preview
+                        </h3>
+
+                        <div id="ctPlaceholder" class="placeholder">
+                            CT image preview
+                        </div>
+
+                        <img id="ctPreview" alt="CT Preview">
+
+                    </div>
+
+
+                    <div class="preview-card">
+
+                        <h3>
+                            MRI Preview
+                        </h3>
+
+                        <div id="mriPlaceholder" class="placeholder">
+                            MRI image preview
+                        </div>
+
+                        <img id="mriPreview" alt="MRI Preview">
+
+                    </div>
+
+
+                    <div class="preview-card">
+
+                        <h3>
+                            Fused Image
+                        </h3>
+
+                        <div class="placeholder">
+                            Result will appear after fusion
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Button -->
+                <div class="button-area">
+
+                    <button type="submit" id="fusionButton">
+                        Start DWT Fusion
+                    </button>
+
+                    <div id="status" class="status">
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <!-- DWT Methodology -->
+        <div class="section">
+
+            <h2>
+                DWT Fusion Methodology
+            </h2>
+
+            <p class="section-description">
+                The proposed system performs multi-scale decomposition and
+                combines important information from CT and MRI images.
+            </p>
+
+
+            <div class="method-grid">
+
+                <div class="method">
+
+                    <h3>
+                        01. Decomposition
+                    </h3>
+
+                    <p>
+                        CT and MRI images are decomposed using the
+                        Discrete Wavelet Transform.
+                    </p>
+
+                </div>
+
+
+                <div class="method">
+
+                    <h3>
+                        02. LL Fusion
+                    </h3>
+
+                    <p>
+                        Low-frequency coefficients are combined using
+                        averaging.
+                    </p>
+
+                </div>
+
+
+                <div class="method">
+
+                    <h3>
+                        03. Detail Fusion
+                    </h3>
+
+                    <p>
+                        High-frequency coefficients are selected according
+                        to their absolute coefficient strength.
+                    </p>
+
+                </div>
+
+
+                <div class="method">
+
+                    <h3>
+                        04. Reconstruction
+                    </h3>
+
+                    <p>
+                        The inverse DWT reconstructs the final fused
+                        medical image.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Project Information -->
+        <div class="section">
+
+            <h2>
+                About Project
+            </h2>
+
+            <p class="section-description">
+
+                This Digital Image Processing project demonstrates
+                DWT-based medical image fusion. CT images provide
+                valuable structural information while MRI images provide
+                complementary soft-tissue information. The fusion process
+                combines these complementary features into a single image.
+
+            </p>
+
+            <p class="section-description">
+
+                The system also calculates image quality measures such as
+                SSIM, PSNR and Entropy to support quantitative evaluation
+                of the fused result.
+
+            </p>
+
+        </div>
+
+
+        <div class="footer">
+
+            DWT-Based Medical Image Fusion |
+            Digital Image Processing Major Project
+
+        </div>
+
+    </div>
+    <script>
+
+        /* -----------------------------
+           CT Image Preview
+        ----------------------------- */
+
+        document.getElementById("ctInput").addEventListener(
+            "change",
+            function () {
+
+                const file = this.files[0];
+
+                if (!file) {
+                    return;
+                }
+
+                const imageURL = URL.createObjectURL(file);
+
+                const preview =
+                    document.getElementById("ctPreview");
+
+                preview.src = imageURL;
+
+                preview.style.display = "block";
+
+                document.getElementById(
+                    "ctPlaceholder"
+                ).style.display = "none";
+
+            }
+        );
+
+
+        /* -----------------------------
+           MRI Image Preview
+        ----------------------------- */
+
+        document.getElementById("mriInput").addEventListener(
+            "change",
+            function () {
+
+                const file = this.files[0];
+
+                if (!file) {
+                    return;
+                }
+
+                const imageURL = URL.createObjectURL(file);
+
+                const preview =
+                    document.getElementById("mriPreview");
+
+                preview.src = imageURL;
+
+                preview.style.display = "block";
+
+                document.getElementById(
+                    "mriPlaceholder"
+                ).style.display = "none";
+
+            }
+        );
+
+
+        /* -----------------------------
+           DWT Fusion
+        ----------------------------- */
+
+        document.getElementById("fusionForm").addEventListener(
+            "submit",
+            function () {
+
+                const ctFile =
+                    document.getElementById("ctInput").files[0];
+
+                const mriFile =
+                    document.getElementById("mriInput").files[0];
+
+                if (!ctFile || !mriFile) {
+
+                    alert(
+                        "Please upload both CT and MRI images first."
+                    );
+
+                    event.preventDefault();
+
+                    return;
+                }
+
+                document.getElementById(
+                    "fusionButton"
+                ).disabled = true;
+
+                document.getElementById(
+                    "fusionButton"
+                ).innerText = "Processing DWT Fusion...";
+
+                document.getElementById(
+                    "status"
+                ).innerText =
+                    "CT and MRI images are being processed. Please wait...";
+
+            }
+        );
+
+    </script>
+</body>
+
+</html>

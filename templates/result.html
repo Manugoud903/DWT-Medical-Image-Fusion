@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Fusion Results | DWT Medical Image Fusion</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #071a1f;
+            color: white;
+            min-height: 100vh;
+        }
+
+        header {
+            padding: 22px 8%;
+            background: #09272d;
+            border-bottom: 1px solid #17464f;
+        }
+
+        header h1 {
+            color: #31d6c5;
+            font-size: 25px;
+        }
+
+        header p {
+            color: #9bb5ba;
+            margin-top: 5px;
+        }
+
+        .container {
+            width: 85%;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+        .title {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .title h2 {
+            font-size: 34px;
+            margin-bottom: 10px;
+        }
+
+        .title p {
+            color: #9bb5ba;
+        }
+
+        .images {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .image-card {
+            background: #0c2b32;
+            padding: 18px;
+            border-radius: 15px;
+            border: 1px solid #17464f;
+            text-align: center;
+        }
+
+        .image-card h3 {
+            margin-bottom: 15px;
+            color: #31d6c5;
+        }
+
+        .image-card img {
+            width: 100%;
+            height: 260px;
+            object-fit: contain;
+            background: #020b0e;
+            border-radius: 10px;
+        }
+
+        .metrics {
+            margin-top: 40px;
+        }
+
+        .metrics h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .metric {
+            background: #0c2b32;
+            border: 1px solid #17464f;
+            border-radius: 12px;
+            padding: 22px;
+            text-align: center;
+        }
+
+        .metric h3 {
+            color: #9bb5ba;
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+
+        .metric strong {
+            font-size: 25px;
+            color: #31d6c5;
+        }
+
+        .actions {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            padding: 14px 25px;
+            margin: 7px;
+            border-radius: 8px;
+            font-weight: bold;
+            background: #31d6c5;
+            color: #06171b;
+        }
+
+        .btn.secondary {
+            background: transparent;
+            color: #31d6c5;
+            border: 1px solid #31d6c5;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #718c91;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 900px) {
+            .images {
+                grid-template-columns: 1fr;
+            }
+
+            .metric-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 500px) {
+            .metric-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>DWT Medical Image Fusion</h1>
+        <p>Medical Image Analysis & Visualization</p>
+    </header>
+
+    <div class="container">
+
+        <div class="title">
+            <h2>Fusion Results</h2>
+            <p>Discrete Wavelet Transform based medical image fusion</p>
+        </div>
+
+        <div class="images">
+
+            <div class="image-card">
+                <h3>CT Image</h3>
+                <img src="/outputs/ct_display.png" alt="CT Image">
+            </div>
+
+            <div class="image-card">
+                <h3>MRI Image</h3>
+                <img src="/outputs/mri_display.png" alt="MRI Image">
+            </div>
+
+            <div class="image-card">
+                <h3>Fused Image</h3>
+                <img src="/outputs/fused_image.png" alt="Fused Medical Image">
+            </div>
+
+        </div>
+
+        <div class="metrics">
+
+            <h2>Image Quality Metrics</h2>
+
+            <div class="metric-grid">
+
+                <div class="metric">
+                    <h3>SSIM vs CT</h3>
+                    <strong>{{ ssim_ct }}</strong>
+                </div>
+
+                <div class="metric">
+                    <h3>SSIM vs MRI</h3>
+                    <strong>{{ ssim_mri }}</strong>
+                </div>
+
+                <div class="metric">
+                    <h3>PSNR vs CT</h3>
+                    <strong>{{ psnr_ct }} dB</strong>
+                </div>
+
+                <div class="metric">
+                    <h3>PSNR vs MRI</h3>
+                    <strong>{{ psnr_mri }} dB</strong>
+                </div>
+
+                <div class="metric">
+                    <h3>Entropy</h3>
+                    <strong>{{ entropy }}</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="actions">
+
+            <a href="/download" class="btn">
+                Download Fused Image
+            </a>
+
+            <a href="/" class="btn secondary">
+                Fuse Another Image
+            </a>
+
+        </div>
+
+    </div>
+
+    <footer>
+        DWT-Based Medical Image Fusion | Academic Research Project
+    </footer>
+
+</body>
+
+</html>
