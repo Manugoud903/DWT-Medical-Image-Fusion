@@ -2,7 +2,8 @@
 
 DEPLOYED ON RENDER :
 https://dwt-medical-image-fusion.onrender.com/
-DWT-based CT and MRI medical image fusion using Python, Flask, and PyWavelets.
+
+DWT-based CT and MRI medical image fusion using Python, Flask, and PyWavelets..
 
 DWT-Based Medical Image Fusion
 
